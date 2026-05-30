@@ -1,0 +1,84 @@
+[debug] [2026-05-30T06:04:54.101Z] ----------------------------------------------------------------------
+[debug] [2026-05-30T06:04:54.112Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Acer\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --debug
+[debug] [2026-05-30T06:04:54.112Z] CLI Version:   15.19.0
+[debug] [2026-05-30T06:04:54.112Z] Platform:      win32
+[debug] [2026-05-30T06:04:54.112Z] Node Version:  v24.16.0
+[debug] [2026-05-30T06:04:54.113Z] Time:          Sat May 30 2026 13:04:54 GMT+0700 (Western Indonesia Time)
+[debug] [2026-05-30T06:04:54.113Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-05-30T06:04:56.892Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-05-30T06:04:56.894Z] > authorizing via signed-in user (citravena06@gmail.com)
+[debug] [2026-05-30T06:04:56.894Z] [iam] checking project laundry-fcd7b for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2026-05-30T06:04:56.896Z] Checked if tokens are valid: true, expires at: 1780123068951
+[debug] [2026-05-30T06:04:56.896Z] Checked if tokens are valid: true, expires at: 1780123068951
+[debug] [2026-05-30T06:04:56.897Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/laundry-fcd7b:testIamPermissions [none]
+[debug] [2026-05-30T06:04:56.898Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/laundry-fcd7b:testIamPermissions  x-goog-user-project=laundry-fcd7b
+[debug] [2026-05-30T06:04:56.898Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/laundry-fcd7b:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-05-30T06:04:58.313Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/laundry-fcd7b:testIamPermissions 200
+[debug] [2026-05-30T06:04:58.313Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/laundry-fcd7b:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-05-30T06:04:58.314Z] Checked if tokens are valid: true, expires at: 1780123068951
+[debug] [2026-05-30T06:04:58.314Z] Checked if tokens are valid: true, expires at: 1780123068951
+[debug] [2026-05-30T06:04:58.314Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/laundry-fcd7b [none]
+[debug] [2026-05-30T06:04:59.143Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/laundry-fcd7b 200
+[debug] [2026-05-30T06:04:59.144Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/laundry-fcd7b {"projectId":"laundry-fcd7b","projectNumber":"997160617517","displayName":"laundry","name":"projects/laundry-fcd7b","resources":{"hostingSite":"laundry-fcd7b"},"state":"ACTIVE","etag":"1_ecb06cff-d125-4de9-8e42-0cda769ba56b"}
+[info] 
+[info] === Deploying to 'laundry-fcd7b'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2026-05-30T06:04:59.148Z] Checked if tokens are valid: true, expires at: 1780123068951
+[debug] [2026-05-30T06:04:59.148Z] Checked if tokens are valid: true, expires at: 1780123068951
+[debug] [2026-05-30T06:04:59.148Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/laundry-fcd7b/sites/laundry-fcd7b [none]
+[debug] [2026-05-30T06:05:00.235Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/laundry-fcd7b/sites/laundry-fcd7b 200
+[debug] [2026-05-30T06:05:00.236Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/laundry-fcd7b/sites/laundry-fcd7b {"name":"projects/laundry-fcd7b/sites/laundry-fcd7b","defaultUrl":"https://laundry-fcd7b.web.app","appId":"1:997160617517:web:0feac28b2422701141daa4","type":"DEFAULT_SITE"}
+[debug] [2026-05-30T06:05:00.238Z] Checked if tokens are valid: true, expires at: 1780123068951
+[debug] [2026-05-30T06:05:00.238Z] Checked if tokens are valid: true, expires at: 1780123068951
+[debug] [2026-05-30T06:05:00.238Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/laundry-fcd7b/versions [none]
+[debug] [2026-05-30T06:05:00.238Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/laundry-fcd7b/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2026-05-30T06:05:01.217Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/laundry-fcd7b/versions 200
+[debug] [2026-05-30T06:05:01.217Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/laundry-fcd7b/versions {"name":"projects/997160617517/sites/laundry-fcd7b/versions/e7ee9471758a6775","status":"CREATED","config":{},"labels":{"deployment-tool":"cli-firebase"}}
+[info] i  hosting[laundry-fcd7b]: beginning deploy... 
+[info] i  hosting[laundry-fcd7b]: found 17 files in public 
+[debug] [2026-05-30T06:05:01.236Z] [hosting] uploading with 200 concurrency
+[debug] [2026-05-30T06:05:01.241Z] Checked if tokens are valid: true, expires at: 1780123068951
+[debug] [2026-05-30T06:05:01.241Z] Checked if tokens are valid: true, expires at: 1780123068951
+[debug] [2026-05-30T06:05:01.242Z] [hosting] hash cache [cHVibGlj] stored for 17 files
+[debug] [2026-05-30T06:05:01.243Z] [hosting][hash queue][FINAL] {"max":1,"min":0,"avg":0,"active":0,"complete":17,"success":17,"errored":0,"retried":0,"total":17,"elapsed":5}
+[debug] [2026-05-30T06:05:01.243Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/997160617517/sites/laundry-fcd7b/versions/e7ee9471758a6775:populateFiles [none]
+[debug] [2026-05-30T06:05:01.244Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/997160617517/sites/laundry-fcd7b/versions/e7ee9471758a6775:populateFiles {"files":{"/style.css":"bc19531d56327135a245647d62cd4928056f7d218123eb8525998964f1413d02","/index.html":"07e807c1f0f50eeee21aa477b4b9a4d7e5b1bd55c05f969dd7296e651f6ac6dd","/app.js":"3bc60f16a445a6275fe0f5c639c2f26cdca0a60a8f269ea0b67a2704298e4409","/icons/search.png":"7619533bf86b7f93bcbfe6d954da34bbf876c4ce1d5bc3a006b3d23fe59299b0","/icons/pesanan.png":"f428036a622130b092d311b80f18ae22cb46901b2a02b9994b0328d5ff0839bc","/icons/pengaturan.png":"d3023738601634013aa1f543bbc0a8e845945cce0163a723ebaaf6199871fdfb","/icons/pelanggan.png":"7421a14474b29a6748a2494ecfb572a1c7f284f6aa45baa07f877a7a679fda13","/icons/logout.png":"1fadcf352094967deec51349dc507566b4c7584c01f8cbf14f4cb65f23000814","/icons/logout-red.png":"e7e68ae4cdc59afcebdaf636eb6f9d9ebffe078857f54ed1417c6b578389623b","/icons/logo.png":"bea99751fc9a89b4be41ace9280d2a01772c5e29b0a72acdecf260f38e8aea7a","/icons/layanan.png":"05ac81c3ae35491c1312f7c03f33994c3fa35bf3cac199ecb1d567c13bdd27c3","/icons/laporan.png":"b59ac1940024c37ce0005100d0b140cca9f2068dc3cd2ca709f37ff595d8316a","/icons/kasir.png":"a3da893b16fdb9d583a014d388c938260c7c32bb3623332f84a204ebadbf9bbf","/icons/empty-orders.png":"9bfdb31b8dd81d0e0d018443ecd7c36d799ef12f20b0502526e7b202046adaec","/icons/empty-document.png":"e498743df251ddfc36e0c949a4e471871fd42336091333799b18425a798856b1","/icons/empty-chart.png":"c00d6f58b732109cefff26ffbe187db5bcf72ebda82b33e77c40f0205b07fb76","/icons/dashboard.png":"e7cbd653e4b2531cd6efb3dbe006accb2ff436cb56cbf09be2398a9f40bd8a27"}}
+[debug] [2026-05-30T06:05:02.055Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/997160617517/sites/laundry-fcd7b/versions/e7ee9471758a6775:populateFiles 200
+[debug] [2026-05-30T06:05:02.055Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/997160617517/sites/laundry-fcd7b/versions/e7ee9471758a6775:populateFiles {"uploadUrl":"https://upload-firebasehosting.googleapis.com/upload/sites/laundry-fcd7b/versions/e7ee9471758a6775/files"}
+[debug] [2026-05-30T06:05:02.056Z] [hosting][populate queue][FINAL] {"max":816,"min":816,"avg":816,"active":0,"complete":1,"success":1,"errored":0,"retried":0,"total":1,"elapsed":816}
+[debug] [2026-05-30T06:05:02.056Z] [hosting] uploads queued: 0
+[debug] [2026-05-30T06:05:02.056Z] [hosting][upload queue][FINAL] {"max":0,"min":9999999999,"avg":0,"active":0,"complete":0,"success":0,"errored":0,"retried":0,"total":0,"elapsed":1780121102056}
+[info] i  hosting: upload complete 
+[info] +  hosting[laundry-fcd7b]: file upload complete 
+[debug] [2026-05-30T06:05:02.057Z] [hosting] deploy completed after 837ms
+[debug] [2026-05-30T06:05:02.058Z] [
+  {
+    "config": {
+      "public": "public",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "site": "laundry-fcd7b"
+    },
+    "version": "projects/997160617517/sites/laundry-fcd7b/versions/e7ee9471758a6775"
+  }
+]
+[info] i  hosting[laundry-fcd7b]: finalizing version... 
+[debug] [2026-05-30T06:05:02.059Z] Checked if tokens are valid: true, expires at: 1780123068951
+[debug] [2026-05-30T06:05:02.059Z] Checked if tokens are valid: true, expires at: 1780123068951
+[debug] [2026-05-30T06:05:02.062Z] >>> [apiv2][query] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/laundry-fcd7b/versions/e7ee9471758a6775 updateMask=status%2Cconfig
+[debug] [2026-05-30T06:05:02.062Z] >>> [apiv2][body] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/laundry-fcd7b/versions/e7ee9471758a6775 {"status":"FINALIZED","config":{}}
+[debug] [2026-05-30T06:05:02.936Z] <<< [apiv2][status] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/laundry-fcd7b/versions/e7ee9471758a6775 200
+[debug] [2026-05-30T06:05:02.936Z] <<< [apiv2][body] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/laundry-fcd7b/versions/e7ee9471758a6775 {"name":"projects/997160617517/sites/laundry-fcd7b/versions/e7ee9471758a6775","status":"FINALIZED","config":{},"labels":{"deployment-tool":"cli-firebase"},"createTime":"2026-05-30T06:05:01.858488Z","createUser":{"email":"citravena06@gmail.com"},"finalizeTime":"2026-05-30T06:05:03.927418Z","finalizeUser":{"email":"citravena06@gmail.com"}}
+[debug] [2026-05-30T06:05:02.937Z] [hosting] finalized version for laundry-fcd7b:[object Object]
+[info] +  hosting[laundry-fcd7b]: version finalized 
+[info] i  hosting[laundry-fcd7b]: releasing new version... 
+[debug] [2026-05-30T06:05:02.938Z] Checked if tokens are valid: true, expires at: 1780123068951
+[debug] [2026-05-30T06:05:02.938Z] Checked if tokens are valid: true, expires at: 1780123068951
+[debug] [2026-05-30T06:05:02.939Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/laundry-fcd7b/channels/live/releases versionName=projects%2F997160617517%2Fsites%2Flaundry-fcd7b%2Fversions%2Fe7ee9471758a6775
+[debug] [2026-05-30T06:05:02.939Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/laundry-fcd7b/channels/live/releases {}
+[debug] [2026-05-30T06:05:03.953Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/laundry-fcd7b/channels/live/releases 200

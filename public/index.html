@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laundry Dewi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+<!-- AUTH -->
+<div id="auth">
+  <div class="auth-box">
+    <div class="auth-brand">
+      <div class="icon">
+        <img src="icons/logo.png" width="24" height="24" alt="Logo">
+      </div>
+      <h1>Laundry Dewi</h1>
+      <p>Sistem Manajemen Laundry</p>
+    </div>
+    <div id="auth-err" class="auth-err"></div>
+    <label class="auth-label">Email</label>
+    <input class="auth-input" type="email" id="li-email" placeholder="admin@laundry.com">
+    <label class="auth-label">Kata Sandi</label>
+    <input class="auth-input" type="password" id="li-pass" placeholder="••••••••">
+    <button class="auth-btn" id="btn-login" type="button">Masuk</button>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sb" id="sidebar">
+  <div class="sb-brand">
+    <div class="sb-brand-row">
+      <div class="sb-icon">
+        <img src="icons/logo.png" width="24" height="24" alt="Logo">
+      </div>
+      <div><h2>Laundry Dewi</h2></div>
+    </div>
+    <p>Manajemen Laundry</p>
+  </div>
+  <nav class="sb-nav">
+    <span class="sb-sec">Menu Utama</span>
+    <button class="sb-btn active" data-page="dashboard" id="nav-dashboard" type="button">
+      <span class="sb-ico"><img src="icons/dashboard.png" width="20" height="20" alt="Dashboard"></span>
+      Dashboard
+    </button>
+    <button class="sb-btn" data-page="orders" id="nav-orders" type="button">
+      <span class="sb-ico"><img src="icons/pesanan.png" width="20" height="20" alt="Pesanan"></span>
+      Pesanan
+      <span class="sb-badge" id="badge-orders" style="display:none">0</span>
+    </button>
+    <button class="sb-btn" data-page="customers" id="nav-customers" type="button">
+      <span class="sb-ico"><img src="icons/pelanggan.png" width="20" height="20" alt="Pelanggan"></span>
+      Pelanggan
+    </button>
+    <button class="sb-btn" data-page="services" id="nav-services" type="button">
+      <span class="sb-ico"><img src="icons/layanan.png" width="20" height="20" alt="Layanan"></span>
+      Layanan &amp; Harga
+    </button>
+    <span class="sb-sec">Keuangan</span>
+    <button class="sb-btn" data-page="cashier" id="nav-cashier" type="button">
+      <span class="sb-ico"><img src="icons/kasir.png" width="20" height="20" alt="Kasir"></span>
+      Kasir
+      <span class="sb-badge g" id="badge-cashier" style="display:none">0</span>
+    </button>
+    <button class="sb-btn" data-page="reports" id="nav-reports" type="button">
+      <span class="sb-ico"><img src="icons/laporan.png" width="20" height="20" alt="Laporan"></span>
+      Laporan
+    </button>
+    <span class="sb-sec">Sistem</span>
+    <button class="sb-btn" data-page="settings" id="nav-settings" type="button">
+      <span class="sb-ico"><img src="icons/pengaturan.png" width="20" height="20" alt="Pengaturan"></span>
+      Pengaturan
+    </button>
+  </nav>
+  <div class="sb-foot">
+    <div class="sb-user" id="btn-logout">
+      <div class="sb-av" id="sb-av">A</div>
+      <div>
+        <div class="sb-uname" id="sb-name">Admin</div>
+        <div class="sb-urole" id="sb-role">Administrator</div>
+      </div>
+      <span class="logout-icon">
+        <img src="icons/logout.png" width="20" height="20" alt="Logout">
+      </span>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main" id="main">
+  <div class="topbar">
+    <div class="tb-title" id="page-title">Dashboard</div>
+    <button class="btn btn-ghost btn-sm" type="button" id="btn-refresh">Segarkan</button>
+    <button class="btn btn-primary btn-sm" type="button" id="btn-main-action">+ Tambah Pesanan</button>
+  </div>
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="stats-grid">
+        <div class="stat" style="--accent:#2563eb" data-nav="orders">
+          
+          <div class="stat-lbl">Pesanan Aktif</div>
+          <div class="stat-val" id="d-active">0</div>
+          <div class="stat-sub">Sedang diproses</div>
+        </div>
+        <div class="stat" style="--accent:#16a34a" data-nav="orders">
+          
+          <div class="stat-lbl">Siap Diambil</div>
+          <div class="stat-val" id="d-ready">0</div>
+          <div class="stat-sub">Menunggu pelanggan</div>
+        </div>
+        <div class="stat" style="--accent:#7c3aed" data-nav="customers">
+          
+          <div class="stat-lbl">Total Pelanggan</div>
+          <div class="stat-val" id="d-cust">0</div>
+          <div class="stat-sub">Terdaftar</div>
+        </div>
+        <div class="stat" style="--accent:#d97706" data-nav="reports">
+          
+          <div class="stat-lbl">Pendapatan Bulan Ini</div>
+          <div class="stat-val" id="d-rev" style="font-size:18px">Rp 0</div>
+          <div class="stat-sub">Pesanan selesai</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:16px">
+        <div class="card">
+          <div class="card-hd">
+            <span class="card-title">Pesanan Terbaru</span>
+            <button class="btn btn-ghost btn-sm" type="button" data-nav="orders">Lihat Semua</button>
+          </div>
+          <div id="dash-recent"><div class="empty"><div class="empty-ico"><img src="icons/empty-orders.png" width="40" height="40" alt="Tidak ada pesanan"></div><h3>Belum ada pesanan</h3></div></div>
+        </div>
+        <div class="card">
+          <div class="card-hd"><span class="card-title">Status Pesanan</span></div>
+          <div class="card-body" id="dash-bars"><div class="empty" style="padding:20px"><div class="empty-ico"><img src="icons/empty-chart.png" width="40" height="40" alt="Tidak ada data"></div><p>Belum ada data</p></div></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
+        <div class="card">
+          <div class="card-hd"><span class="card-title">Pelanggan Teratas</span></div>
+          <div id="dash-top-cust"><div class="empty" style="padding:20px"><p>Belum ada data</p></div></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="page" id="page-orders">
+      <div class="filter-row">
+        <div class="search-wrap" style="flex:1;max-width:280px">
+          <img src="icons/search.png" width="16" height="16" alt="Cari">
+          <input type="text" placeholder="Cari nama / no. pesanan..." id="ord-search">
+        </div>
+        <select class="filter-sel" id="ord-status-f">
+          <option value="">Semua Status</option>
+          <option>Diterima</option>
+          <option>Dicuci</option>
+          <option>Dikeringkan</option>
+          <option>Disetrika</option>
+          <option>Siap Ambil</option>
+          <option>Selesai</option>
+        </select>
+
+      </div>
+      <div class="card">
+        <div class="card-hd">
+          <span class="card-title">Daftar Pesanan</span>
+          <div style="display:flex;gap:8px;align-items:center">
+            <span id="ord-count" style="font-size:12px;color:var(--text3)">0 pesanan</span>
+            <button class="btn btn-ghost btn-sm" type="button" id="btn-export-csv">Export CSV</button>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>No. Order</th><th>Pelanggan</th><th>Layanan</th><th>Berat</th><th>Total</th><th>Status</th><th>Masuk</th><th>Aksi</th></tr></thead>
+            <tbody id="ord-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- CUSTOMERS -->
+    <div class="page" id="page-customers">
+      <div class="filter-row">
+        <div class="search-wrap" style="flex:1;max-width:300px">
+          <img src="icons/search.png" width="16" height="16" alt="Cari">
+          <input type="text" placeholder="Cari nama / telepon..." id="cust-search">
+        </div>
+        <select class="filter-sel" id="cust-sort">
+          <option value="joined">Terbaru</option>
+          <option value="name">Nama A-Z</option>
+          <option value="spend">Tertinggi Belanja</option>
+        </select>
+      </div>
+      <div class="card">
+        <div class="card-hd">
+          <span class="card-title">Data Pelanggan</span>
+          <span id="cust-count" style="font-size:12px;color:var(--text3)">0 pelanggan</span>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Pelanggan</th><th>Telepon</th><th>Alamat</th><th>Total Pesanan</th><th>Total Belanja</th><th>Bergabung</th><th>Aksi</th></tr></thead>
+            <tbody id="cust-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SERVICES -->
+    <div class="page" id="page-services">
+      <div class="card">
+        <div class="card-hd">
+          <span class="card-title">Layanan &amp; Harga</span>
+          <span id="svc-count" style="font-size:12px;color:var(--text3)">0 layanan</span>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Nama Layanan</th><th>Harga/kg</th><th>Estimasi</th><th>Deskripsi</th><th>Status</th><th>Aksi</th></tr></thead>
+            <tbody id="svc-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASHIER -->
+    <div class="page" id="page-cashier">
+      <div style="display:grid;grid-template-columns:1fr 360px;gap:16px">
+        <div class="card">
+          <div class="card-hd"><span class="card-title">Pesanan Siap Bayar</span></div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Order</th><th>Pelanggan</th><th>Layanan</th><th>Total</th><th>Aksi</th></tr></thead>
+              <tbody id="cashier-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card" id="cashier-receipt-card">
+          <div class="card-hd"><span class="card-title">Struk Pembayaran</span></div>
+          <div class="card-body" id="cashier-receipt">
+            <div class="empty">
+              <div class="empty-ico"><img src="icons/empty-chart.png" width="40" height="40" alt="Tidak ada data"></div>
+              <h3>Pilih Pesanan</h3>
+              <p>Klik "Bayar" untuk memproses</p>
+            </div>
+          </div>
+          <div id="cashier-btns" style="padding:14px 18px;border-top:1px solid var(--border);display:none;gap:8px;justify-content:flex-end">
+            <button class="btn btn-ghost btn-sm" type="button" id="btn-print-receipt">Cetak</button>
+            <button class="btn btn-green btn-sm" type="button" id="btn-confirm-pay">Konfirmasi Bayar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPORTS -->
+    <div class="page" id="page-reports">
+      <div class="filter-row">
+        <select class="filter-sel" id="rep-period">
+          <option value="month" selected>Bulan Ini</option>
+          <option value="last_month">Bulan Lalu</option>
+          <option value="week">7 Hari Terakhir</option>
+          <option value="all">Semua Waktu</option>
+        </select>
+        <button class="btn btn-ghost btn-sm" type="button" id="btn-rep-refresh">Perbarui</button>
+        <button class="btn btn-primary btn-sm" type="button" id="btn-print-report">Cetak</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px">
+        <div class="stat" style="--accent:var(--green);cursor:default">
+          
+          <div class="stat-lbl">Pendapatan</div>
+          <div class="stat-val" id="rep-rev" style="font-size:18px">Rp 0</div>
+        </div>
+        <div class="stat" style="--accent:var(--blue);cursor:default">
+          
+          <div class="stat-lbl">Pesanan Selesai</div>
+          <div class="stat-val" id="rep-ord">0</div>
+        </div>
+        <div class="stat" style="--accent:var(--violet);cursor:default">
+          
+          <div class="stat-lbl">Total Berat</div>
+          <div class="stat-val" id="rep-kg">0 kg</div>
+        </div>
+        <div class="stat" style="--accent:var(--amber);cursor:default">
+          
+          <div class="stat-lbl">Rata-rata/Order</div>
+          <div class="stat-val" id="rep-avg" style="font-size:18px">Rp 0</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:16px">
+        <div class="card">
+          <div class="card-hd"><span class="card-title">Transaksi Selesai</span></div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Order</th><th>Pelanggan</th><th>Layanan</th><th>Berat</th><th>Total</th><th>Tanggal</th></tr></thead>
+              <tbody id="rep-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:16px">
+            <div class="card-hd"><span class="card-title">Per Layanan</span></div>
+            <div class="card-body" id="rep-bars"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="page" id="page-settings">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div class="card">
+          <div class="card-hd"><span class="card-title">Informasi Toko</span></div>
+          <div class="card-body">
+            <div class="form-grid" style="gap:12px">
+              <div class="fg"><label>Nama Toko</label><input id="set-nm" value="Laundry Dewi"></div>
+              <div class="fg"><label>No. Telepon</label><input id="set-ph" value="0853-7145-9972"></div>
+              <div class="fg full"><label>Alamat</label><textarea id="set-addr" rows="2">Gg.Tepas, Diski</textarea></div>
+              <div class="fg"><label>Jam Buka</label><input type="time" id="set-op" value="08:00"></div>
+              <div class="fg"><label>Jam Tutup</label><input type="time" id="set-cl" value="21:00"></div>
+              <div class="fg"><label>Email</label><input id="set-em" value="admin@laundry.com"></div>
+            </div>
+            <button class="btn btn-primary" style="margin-top:16px" type="button" id="btn-save-settings">Simpan Pengaturan</button>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:16px">
+            <div class="card-hd"><span class="card-title">Firebase</span></div>
+            <div class="card-body">
+              <div style="background:var(--green-bg);border:1px solid #bbf7d0;border-radius:9px;padding:12px;font-size:13px;color:var(--green);margin-bottom:12px">Terhubung ke Firebase Firestore</div>
+              <div class="fg"><label>Project ID</label><input value="laundry-fcd7b" readonly style="opacity:.6"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-hd"><span class="card-title">Manajemen Data</span></div>
+            <div class="card-body" style="display:flex;flex-direction:column;gap:8px">
+              <button class="btn btn-ghost" type="button" id="btn-export-all" style="justify-content:flex-start">Export Semua CSV</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- MODAL: PESANAN -->
+<div class="overlay" id="m-order">
+  <div class="modal">
+    <div class="modal-hd">
+      <span class="modal-title" id="m-order-title">Tambah Pesanan</span>
+      <button class="modal-close" type="button" id="m-order-close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="fg"><label>Nama Pelanggan *</label><input id="o-name" placeholder="Nama pelanggan"></div>
+        <div class="fg"><label>No. Telepon *</label><input id="o-phone" type="tel" placeholder="0812..."></div>
+        <div class="fg"><label>Layanan *</label><select id="o-svc"><option value="">Pilih Layanan</option></select></div>
+        <div class="fg"><label>Berat (kg) *</label><input id="o-kg" type="number" min="0.1" step="0.1" placeholder="0.0"></div>
+        <div class="fg"><label>Total Harga (Rp)</label><input id="o-total" readonly placeholder="Otomatis" style="opacity:.7"></div>
+        <div class="fg"><label>Status</label>
+          <select id="o-status">
+            <option>Diterima</option><option>Dicuci</option><option>Dikeringkan</option>
+            <option>Disetrika</option><option>Siap Ambil</option><option>Selesai</option>
+          </select>
+        </div>
+        <div class="fg"><label>Tanggal Masuk</label><input id="o-date" type="date"></div>
+        <div class="fg full"><label>Catatan</label><textarea id="o-notes" rows="2" placeholder="Catatan tambahan..."></textarea></div>
+      </div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-ghost" type="button" id="m-order-cancel">Batal</button>
+      <button class="btn btn-primary" type="button" id="m-order-save">Simpan Pesanan</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: DETAIL PESANAN -->
+<div class="overlay" id="m-detail">
+  <div class="modal">
+    <div class="modal-hd">
+      <span class="modal-title" id="m-detail-title">Detail Pesanan</span>
+      <button class="modal-close" type="button" id="m-detail-close">&times;</button>
+    </div>
+    <div class="modal-body" id="m-detail-body"></div>
+    <div class="modal-ft">
+      <button class="btn btn-ghost" type="button" id="m-detail-cancel">Tutup</button>
+      <button class="btn btn-primary" type="button" id="m-detail-save">Update Status</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: PELANGGAN -->
+<div class="overlay" id="m-cust">
+  <div class="modal">
+    <div class="modal-hd">
+      <span class="modal-title" id="m-cust-title">Tambah Pelanggan</span>
+      <button class="modal-close" type="button" id="m-cust-close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="fg"><label>Nama Lengkap *</label><input id="c-name" placeholder="Nama pelanggan"></div>
+        <div class="fg"><label>No. Telepon *</label><input id="c-phone" type="tel" placeholder="0812..."></div>
+        <div class="fg full"><label>Alamat</label><textarea id="c-addr" rows="2" placeholder="Alamat lengkap..."></textarea></div>
+        <div class="fg"><label>Email</label><input id="c-email" type="email" placeholder="email@contoh.com"></div>
+        <div class="fg"><label>Tanggal Lahir</label><input id="c-dob" type="date"></div>
+      </div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-ghost" type="button" id="m-cust-cancel">Batal</button>
+      <button class="btn btn-primary" type="button" id="m-cust-save">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: LAYANAN -->
+<div class="overlay" id="m-svc">
+  <div class="modal">
+    <div class="modal-hd">
+      <span class="modal-title" id="m-svc-title">Tambah Layanan</span>
+      <button class="modal-close" type="button" id="m-svc-close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="fg"><label>Nama Layanan *</label><input id="s-name" placeholder="Cuci Reguler"></div>
+        <div class="fg"><label>Harga per kg (Rp) *</label><input id="s-price" type="number" min="1" step="0.01" placeholder="5000"></div>
+        <div class="fg"><label>Estimasi Selesai</label><input id="s-dur" placeholder="2-3 hari"></div>
+        <div class="fg"><label>Status</label>
+          <select id="s-active">
+            <option value="1">Aktif</option>
+            <option value="0">Nonaktif</option>
+          </select>
+        </div>
+        <div class="fg full"><label>Deskripsi</label><textarea id="s-desc" rows="2" placeholder="Keterangan layanan..."></textarea></div>
+      </div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-ghost" type="button" id="m-svc-cancel">Batal</button>
+      <button class="btn btn-primary" type="button" id="m-svc-save">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: LOGOUT -->
+<div class="overlay" id="m-logout">
+  <div class="modal" style="max-width:360px">
+    <div class="modal-hd">
+      <span class="modal-title">Keluar?</span>
+      <button class="modal-close" type="button" id="m-logout-close">&times;</button>
+    </div>
+    <div class="modal-body" style="text-align:center;padding:28px">
+      <div style="width:48px;height:48px;background:var(--red-bg);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+        <img src="icons/logout-red.png" width="24" height="24" alt="Keluar">
+      </div>
+      <p style="font-size:15px;font-weight:700;margin-bottom:6px">Yakin ingin keluar?</p>
+      <p style="font-size:13px;color:var(--text2)">Anda akan kembali ke halaman login.</p>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-ghost" type="button" id="m-logout-cancel">Batal</button>
+      <button class="btn btn-red" type="button" id="m-logout-confirm">Keluar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOASTS -->
+<div class="toasts" id="toasts"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
